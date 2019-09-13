@@ -10,4 +10,9 @@ public class Profile {
 		this.version = version;
 		this.lastPlayed = lastPlayed;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("[version: %s, lastPlayed: %s]", version, lastPlayed);
+	}
 }

@@ -2,11 +2,13 @@ package promansew.mcmodupdater;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import promansew.mcmodupdater.model.Mod;
 import promansew.mcmodupdater.model.Profile;
+import promansew.mcmodupdater.parser.ModParser;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,19 +38,36 @@ public final class MCData {
 
 	/** @return Список профилей */
 	public static List<Profile> getProfiles() {
-		InputStream in;
-		try {
-			in = new FileInputStream(new File(PATH, "launcher_profiles.json"));
-		} catch (FileNotFoundException e) {
+		JSONObject json;
+		try (InputStream in = new FileInputStream(new File(PATH, "launcher_profiles.json"))) {
+			json = new JSONObject(new JSONTokener(in)).getJSONObject("profiles");
+		} catch (IOException e) {
 			return Collections.emptyList();
 		}
-		JSONObject json = new JSONObject(new JSONTokener(in)).getJSONObject("profiles");
 		List<Profile> list = new ArrayList<>();
 		for (String key : json.keySet()) {
 			JSONObject profile = json.getJSONObject(key);
-			LocalDateTime lastPlayed = LocalDateTime.parse(profile.getString("lastUsed"), DateTimeFormatter.ISO_DATE_TIME);
-			list.add(new Profile(profile.getString("lastVersionId"), lastPlayed));
+			String version = profile.getString("lastVersionId");
+			if (version.startsWith("latest")) continue;
+			String lastUsed = profile.getString("lastUsed");
+			LocalDateTime lastPlayed = LocalDateTime.parse(lastUsed, DateTimeFormatter.ISO_DATE_TIME);
+			list.add(new Profile(version, lastPlayed));
 		}
 		return list;
+	}
+
+	/** @return Список модов */
+	public static List<Mod> getMods() {
+		File path = new File(PATH, "mods");
+		if (!path.exists()) return Collections.emptyList();
+		File[] files = path.listFiles(file -> file.isFile() && file.getName().endsWith(".jar"));
+		if (files == null) return Collections.emptyList();
+		List<Mod> mods = new ArrayList<>(files.length);
+		for (File file : files) {
+			Mod mod = ModParser.parse(file);
+			System.out.println(mod);
+			mods.add(mod);
+		}
+		return mods;
 	}
 }

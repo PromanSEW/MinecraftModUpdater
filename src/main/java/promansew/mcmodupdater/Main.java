@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
 
-import static promansew.mcmodupdater.util.Utils.getString;
+import static promansew.mcmodupdater.Utils.getString;
 
 public class Main extends Application {
 
@@ -29,7 +29,6 @@ public class Main extends Application {
 		stage.setTitle("Minecraft Mod Updater");
 		stage.setScene(new Scene(root, 854, 480));
 		stage.show();
-		System.out.println(MCData.getProfiles());
 	}
 
 	/** Minecraft не найден */

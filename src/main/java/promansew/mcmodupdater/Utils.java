@@ -1,4 +1,4 @@
-package promansew.mcmodupdater.util;
+package promansew.mcmodupdater;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
