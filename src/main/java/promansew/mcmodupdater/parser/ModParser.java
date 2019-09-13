@@ -15,8 +15,10 @@ import java.util.regex.Pattern;
 
 public class ModParser {
 
-	private static final Pattern PATTERN = Pattern.compile("[0-9\\[\\].]*([a-zA-Z_-]+)[_-]([v]*[0-9-.]+[\\w.]*)\\.jar");
+	private static final Pattern PATTERN =
+			Pattern.compile("(\\[[\\d.]+])?([a-zA-Z_-]+\\d?)[_-]([a-zA-Z]*[\\d.]+(-[\\d.]+)?)[-\\w.]*\\.jar");
 
+	/** @return Информация о моде */
 	public static Mod parse(File file) {
 		String filename = file.getName();
 		JSONObject info = getModInfo(file);
@@ -33,7 +35,7 @@ public class ModParser {
 			}
 		}
 		String version = info == null ? null : info.optString("version", null);
-		if (version == null || version.isEmpty()) version = getVersion(filename);
+		if (isInvalidVersion(version)) version = getVersion(filename);
 		return new Mod(name, version);
 	}
 
@@ -56,14 +58,20 @@ public class ModParser {
 		}
 	}
 
+	/** @return Название мода */
 	private static String getName(String file) {
 		Matcher matcher = PATTERN.matcher(file);
-		return matcher.matches() ? matcher.group(1) : file;
+		return matcher.matches() ? matcher.group(2) : file;
 	}
 
-	/** */
+	/** @return Версия мода */
 	private static String getVersion(String file) {
 		Matcher matcher = PATTERN.matcher(file);
-		return matcher.matches() ? matcher.group(2) : "unknown";
+		return matcher.matches() ? matcher.group(3) : "unknown";
+	}
+
+	/** @return Валидная ли версия мода */
+	private static boolean isInvalidVersion(String version) {
+		return version == null || version.isEmpty() || version.equals("@VERSION@") || version.equals("$version");
 	}
 }
