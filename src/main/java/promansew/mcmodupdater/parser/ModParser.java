@@ -37,7 +37,7 @@ public class ModParser {
 		String version = info == null ? null : info.optString("version", null);
 		if (isInvalidVersion(version)) version = getVersion(filename);
 		String updateUrl = info == null ? null : info.optString("updateUrl", null);
-		return new Mod(name, version, updateUrl);
+		return new Mod(name, version, updateUrl == null ? null : updateUrl.isEmpty() ? null: updateUrl);
 	}
 
 	/** @return JSON из {@code mcmod.info} */
