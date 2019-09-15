@@ -9,11 +9,11 @@ import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
 
-import static promansew.mcmodupdater.Utils.getString;
+import static promansew.mcmodupdater.Utils.getResourceBundle;
 
 public class Main extends Application {
 
-	private final ResourceBundle STRINGS = ResourceBundle.getBundle("Main");
+	private final ResourceBundle STRINGS = getResourceBundle("Main");
 
 	public static void main(String[] args) {
 		launch(args);
@@ -34,9 +34,9 @@ public class Main extends Application {
 	/** Minecraft не найден */
 	private void minecraftNotFound() {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle(getString(STRINGS, "error"));
+		alert.setTitle(STRINGS.getString("error"));
 		alert.setHeaderText(null);
-		alert.setContentText(getString(STRINGS, "error.mcnotfound"));
+		alert.setContentText(STRINGS.getString("error.mcnotfound"));
 		if (!alert.showAndWait().isPresent()) System.exit(0);
 	}
 }
