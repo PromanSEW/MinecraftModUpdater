@@ -22,7 +22,7 @@ public class ModParser {
 	public static Mod parse(File file) {
 		String filename = file.getName();
 		JSONObject info = getModInfo(file);
-		if (info == null) return new Mod(getName(filename), getVersion(filename));
+		if (info == null) return new Mod(getName(filename), getVersion(filename), null);
 		String name = info.optString("name", null);
 		if (name == null) {
 			JSONArray modList = info.optJSONArray("modList");
@@ -36,7 +36,8 @@ public class ModParser {
 		}
 		String version = info == null ? null : info.optString("version", null);
 		if (isInvalidVersion(version)) version = getVersion(filename);
-		return new Mod(name, version);
+		String updateUrl = info == null ? null : info.optString("updateUrl", null);
+		return new Mod(name, version, updateUrl);
 	}
 
 	/** @return JSON из {@code mcmod.info} */
