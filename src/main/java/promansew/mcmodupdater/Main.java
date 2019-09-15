@@ -13,7 +13,7 @@ import static promansew.mcmodupdater.Utils.getResourceBundle;
 
 public class Main extends Application {
 
-	private final ResourceBundle STRINGS = getResourceBundle("Main");
+	public static final ResourceBundle STRINGS = getResourceBundle("Main");
 
 	public static void main(String[] args) {
 		launch(args);

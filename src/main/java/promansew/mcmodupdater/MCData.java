@@ -2,20 +2,12 @@ package promansew.mcmodupdater;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import promansew.mcmodupdater.model.Mod;
 import promansew.mcmodupdater.model.Profile;
-import promansew.mcmodupdater.parser.ModParser;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public final class MCData {
 
@@ -56,18 +48,18 @@ public final class MCData {
 		return list;
 	}
 
-	/** @return Список модов */
-	public static List<Mod> getMods() {
+	/** @return Список файлов модов, {@code null} при ошибке */
+	public static File[] getMods() {
 		File path = new File(PATH, "mods");
-		if (!path.exists()) return Collections.emptyList();
-		File[] files = path.listFiles(file -> file.isFile() && file.getName().endsWith(".jar"));
-		if (files == null) return Collections.emptyList();
-		List<Mod> mods = new ArrayList<>(files.length);
-		for (File file : files) {
-			Mod mod = ModParser.parse(file);
-			System.out.println(mod);
-			mods.add(mod);
-		}
-		return mods;
+		return !path.exists() ? null : path.listFiles(file -> file.isFile() && file.getName().endsWith(".jar"));
+	}
+
+	/** @return Версия Minecraft */
+	public static String getVersion() {
+		List<Profile> profiles = getProfiles();
+		Collections.sort(profiles);
+		String version = profiles.get(profiles.size() - 1).version;
+		int index = version.indexOf('-');
+		return index == -1 ? version : version.substring(0, index);
 	}
 }
