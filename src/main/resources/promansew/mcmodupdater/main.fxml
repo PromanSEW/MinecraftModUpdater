@@ -11,18 +11,6 @@
 
 <GridPane hgap="5.0" vgap="5.0" xmlns="http://javafx.com/javafx/8.0.221" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="promansew.mcmodupdater.controllers.MainController">
-    <children>
-        <Label fx:id="version" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <ProgressBar fx:id="progressBar" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.columnIndex="0"
-                     GridPane.rowIndex="1"/>
-        <TableView fx:id="mods" GridPane.columnIndex="0" GridPane.rowIndex="2">
-            <columns>
-                <TableColumn text="%mods.name"/>
-                <TableColumn text="%mods.version"/>
-                <TableColumn/>
-            </columns>
-        </TableView>
-    </children>
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS"/>
     </columnConstraints>
@@ -34,4 +22,14 @@
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
     </padding>
+    <Label fx:id="version" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <ProgressBar fx:id="progressBar" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.columnIndex="0"
+                 GridPane.rowIndex="1"/>
+    <TableView fx:id="mods" GridPane.columnIndex="0" GridPane.rowIndex="2">
+        <columns>
+            <TableColumn text="%mods.name"/>
+            <TableColumn text="%mods.version"/>
+            <TableColumn/>
+        </columns>
+    </TableView>
 </GridPane>
