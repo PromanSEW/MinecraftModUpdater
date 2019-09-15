@@ -11,17 +11,13 @@ import java.util.List;
 
 public class ModParseTask extends Task<List<Mod>> {
 	@Override
-	protected List<Mod> call() throws InterruptedException {
+	protected List<Mod> call() {
 		File[] files = MCData.getMods();
 		if (files == null) return Collections.emptyList();
-		int i = 0;
 		List<Mod> mods = new ArrayList<>(files.length);
-		for (File file : files) {
-			Mod mod = ModParser.parse(file);
-			System.out.println(mod);
-			mods.add(mod);
-			i++;
-			updateProgress(i, files.length);
+		for (int i = 0; i < files.length; i++) {
+			mods.add(ModParser.parse(files[i]));
+			updateProgress(i + 1, files.length);
 		}
 		return mods;
 	}
